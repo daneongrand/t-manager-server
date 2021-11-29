@@ -131,8 +131,23 @@ const MinusPhrase = sequelize.define('minusPhrase', {
 
 })
 
+const TokenList = sequelize.define('tokenList', {
+    
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+
+    refreshToken: {
+        type: DataTypes.STRING,
+    }
+
+})
+
 
 User.hasMany(Campaign)
+User.hasMany(TokenList)
 Campaign.hasMany(Group)
 Campaign.hasMany(MinusPhrase)
 Group.hasMany(Keyword)
@@ -143,5 +158,6 @@ module.exports = {
     Campaign,
     Group,
     Keyword,
-    MinusPhrase
+    MinusPhrase,
+    TokenList
 }
