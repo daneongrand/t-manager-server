@@ -22,6 +22,38 @@ class CampaignController {
         }
     }
 
+
+    async rename (req, res, next) {
+        try {
+            const { campaignName } = req.body
+            const { id } = req.params
+            const campaign = await campaignService.rename(id, campaignName)
+            return res.json(campaign)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async getOne (req, res, next) {
+        try {
+            const { id } = req.params
+            const campaign = await campaignService.getOne(id)
+            return res.json(campaign)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async delete (req, res, next) {
+        try {
+            const { id } = req.params
+            const campaign = await campaignService.delete(id)
+            return res.json(campaign)
+        } catch (e) {
+            next(e)
+        }
+    }
+
 }
 
 module.exports = new CampaignController()

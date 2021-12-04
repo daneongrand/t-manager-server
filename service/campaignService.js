@@ -14,6 +14,35 @@ class CampaignService {
             campaign
         }
     }
+
+    async rename (campaignId, campaignName) {
+        const campaign = await Campaign.update(
+            {
+                campaignName: campaignName
+            },
+            {
+                where: { id: campaignId }
+            }
+        )
+        return {
+            campaign
+        }
+    }
+
+    async getOne (campaignId) {
+        const campaign = await Campaign.findOne({ where: { id: campaignId } })
+        return {
+            campaign
+        }
+
+    }
+
+    async delete (campaignId) {
+        const campaign = await Campaign.destroy({ where: { id: campaignId } })
+        return {
+            campaign
+        }
+    }
 }
 
 module.exports = new CampaignService()
