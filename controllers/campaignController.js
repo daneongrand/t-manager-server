@@ -48,6 +48,7 @@ class CampaignController {
         try {
             const { id } = req.params
             const campaign = await campaignService.delete(id)
+            console.log("CAMPAIGN", campaign)
             return res.json(campaign)
         } catch (e) {
             next(e)

@@ -38,9 +38,10 @@ class CampaignService {
     }
 
     async delete (campaignId) {
-        const campaign = await Campaign.destroy({ where: { id: campaignId } })
+        const deletedCampaignId = campaignId
+        const campaign = await Campaign.destroy({ where: { id: deletedCampaignId } })
         return {
-            campaign
+            deletedCampaignId
         }
     }
 }
