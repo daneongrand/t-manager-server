@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const cookieParser = require('cookie-parser')
+const fileUpload = require('express-fileupload')
 const sequelize = require('./db')
 const models = require('./models/models')
 const PORT = process.env.PORT || 5000
@@ -9,6 +10,7 @@ const router = require('./routes/index')
 const errorMiddleware = require('./middlewares/errorMiddleware')
 
 const app = express()
+app.use(fileUpload({}))
 app.use(cookieParser())
 app.use(cors({
     credentials: true,
