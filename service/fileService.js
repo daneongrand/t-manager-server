@@ -1,7 +1,7 @@
 const path = require('path') 
 const fs = require('fs/promises')
 const csv = require('csv-parser')
-
+const { v4 } = require('uuid')
 
 class fileService {
     async fileUpload(id, file) {
@@ -12,7 +12,8 @@ class fileService {
         const results = await this.readFile(pathUploadFile)
         const keywords = results.map((item) => {
             return {
-                keywords: item["Keyword"],
+                keywordId: v4(),
+                keyword: item["Keyword"],
                 currency: item["Currency"],
                 ams: item["Avg. monthly searches"],
                 competition: item["Competition"],
