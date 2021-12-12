@@ -1,18 +1,31 @@
-const { Group } = require("../models/models")
+const { Group, Keyword } = require("../models/models")
+const keywordsService = require("./keywordsService")
 
 
 class GroupService {
     async getAll(campaignId) {
+        
         const groups = await Group.findAll({ where: { campaignId: campaignId }})
-        return {
-            groups
-        }
+        const newGroups = Promise.all(groups.map(async (item) => {
+            const keywords = await keywordsService.getAll(item.id)
+            return {
+                groupId: item.id,
+                groupName: item.groupName,
+                campaignId: item.campaignId,
+                groupKeywords: keywords
+            }
+        }))
+        
+        return newGroups
     }
 
     async create(campaignId, groupName) {
         const group = await Group.create({groupName, campaignId})
         return {
-            group
+            groupId: group.id,
+            groupName: group.groupName,
+            campaignId: group.campaignId,
+            groupKeywords: []
         }
     }
 
@@ -23,7 +36,8 @@ class GroupService {
             where: { id: groupId }
         })
         return {
-            group
+            groupId: groupId,
+            groupName: groupName
         }
     }
 
@@ -32,7 +46,7 @@ class GroupService {
             where: { id: groupId }
         })
         return {
-            group
+            groupId: groupId
         }
     }
 

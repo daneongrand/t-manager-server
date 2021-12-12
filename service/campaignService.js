@@ -25,7 +25,7 @@ class CampaignService {
             }
         )
         return {
-            campaign
+            campaignName
         }
     }
 

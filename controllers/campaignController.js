@@ -27,8 +27,8 @@ class CampaignController {
         try {
             const { campaignName } = req.body
             const { id } = req.params
-            const campaign = await campaignService.rename(id, campaignName)
-            return res.json(campaign)
+            const newCampaignName = await campaignService.rename(id, campaignName)
+            return res.json(newCampaignName)
         } catch (e) {
             next(e)
         }
