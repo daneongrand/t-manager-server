@@ -4,10 +4,12 @@ const keywordsService = require("./keywordsService")
 
 class GroupService {
     async getAll(campaignId) {
-        
+        console.log(campaignId)
         const groups = await Group.findAll({ where: { campaignId: campaignId }})
         const newGroups = Promise.all(groups.map(async (item) => {
-            const keywords = await keywordsService.getAll(item.id)
+            console.log(item)
+            const keywords = await keywordsService.getAll(item.campaignId, item.id)
+           
             return {
                 groupId: item.id,
                 groupName: item.groupName,

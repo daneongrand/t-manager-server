@@ -63,7 +63,7 @@ const Group = sequelize.define('group', {
 
 const Keyword = sequelize.define('keyword', {
 
-    id: {
+    keywordId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -82,12 +82,12 @@ const Keyword = sequelize.define('keyword', {
     },
 
     lowRange: {
-        type: DataTypes.FLOAT
+        type: DataTypes.STRING
         
     },
 
     highRange: {
-        type: DataTypes.FLOAT
+        type: DataTypes.STRING
     },
 
     currency: {
@@ -98,7 +98,7 @@ const Keyword = sequelize.define('keyword', {
 
 const MinusPhrase = sequelize.define('minusPhrase', {
 
-    id: {
+    keywordId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -117,12 +117,12 @@ const MinusPhrase = sequelize.define('minusPhrase', {
     },
 
     lowRange: {
-        type: DataTypes.FLOAT
+        type: DataTypes.STRING
         
     },
 
     highRange: {
-        type: DataTypes.FLOAT
+        type: DataTypes.STRING
     },
 
     currency: {
@@ -149,6 +149,7 @@ const TokenList = sequelize.define('tokenList', {
 User.hasMany(Campaign)
 User.hasMany(TokenList)
 Campaign.hasMany(Group)
+Campaign.hasMany(Keyword)
 Campaign.hasMany(MinusPhrase)
 Group.hasMany(Keyword)
 
