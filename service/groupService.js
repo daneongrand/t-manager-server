@@ -8,7 +8,7 @@ class GroupService {
         const groups = await Group.findAll({ where: { campaignId: campaignId }})
         const newGroups = Promise.all(groups.map(async (item) => {
             console.log(item)
-            const keywords = await keywordsService.getAll(item.campaignId, item.id)
+            const keywords = await keywordsService.getAllKeyword(item.campaignId, item.id)
            
             return {
                 groupId: item.id,

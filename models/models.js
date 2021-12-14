@@ -92,44 +92,15 @@ const Keyword = sequelize.define('keyword', {
 
     currency: {
         type: DataTypes.STRING
+    },
+
+    isMinusPhrase: {
+        type: DataTypes.BOOLEAN
     }
 
 })
 
-const MinusPhrase = sequelize.define('minusPhrase', {
 
-    keywordId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-
-    keyword: {
-        type: DataTypes.STRING
-    },
-
-    ams: {
-        type: DataTypes.STRING
-    },
-
-    competition: {
-        type: DataTypes.STRING
-    },
-
-    lowRange: {
-        type: DataTypes.STRING
-        
-    },
-
-    highRange: {
-        type: DataTypes.STRING
-    },
-
-    currency: {
-        type: DataTypes.STRING
-    }
-
-})
 
 const TokenList = sequelize.define('tokenList', {
     
@@ -150,7 +121,6 @@ User.hasMany(Campaign)
 User.hasMany(TokenList)
 Campaign.hasMany(Group)
 Campaign.hasMany(Keyword)
-Campaign.hasMany(MinusPhrase)
 Group.hasMany(Keyword)
 
 
@@ -159,6 +129,5 @@ module.exports = {
     Campaign,
     Group,
     Keyword,
-    MinusPhrase,
     TokenList
 }
