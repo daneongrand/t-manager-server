@@ -24,6 +24,17 @@ class KeywordController {
         }
     }
 
+    async editKeyword(req, res, next) {
+        try {
+            const { keywordId } = req.params
+            const { groupId, isMinusPhrase } = req.body
+            const newKeyword = await keywordsService.editKeyword(keywordId, groupId, isMinusPhrase)
+            res.json(newKeyword)
+        } catch (e) {
+            next(e)
+        }
+    }
+
     async getAllKeyword(req, res, next) {
         try {
             const { campaignId, groupId } = req.params

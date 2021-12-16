@@ -9,6 +9,6 @@ router.post('/:campaignId&:groupId', authMiddleware, keywordController.createKey
 router.post('/minusPhrase/:campaignId', authMiddleware, keywordController.createMinusPhrase)
 router.delete('/:keywordId', authMiddleware, keywordController.deleteKeyword)
 router.delete('/minusPhrase/:keywordId', authMiddleware, keywordController.deleteMinusPhrase)
-
+router.put('/:keywordId', authMiddleware, keywordController.editKeyword)
 
 module.exports = router

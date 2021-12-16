@@ -7,6 +7,7 @@ class fileController {
             const { campaignId } = req.params
             const file = req.files.file
             const keywords = await fileService.fileUpload(user.id, campaignId, file)
+            console.log(keywords)
             return res.json(keywords)
         } catch (e) {
             next(e)

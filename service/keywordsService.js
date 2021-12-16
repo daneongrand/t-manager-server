@@ -11,13 +11,40 @@ class KeywordsService {
             return keywords
         }
     }
-
+    
     async getAllMinusPhrase( campaignId ) {
         const minusPhrases = await Keyword.findAll({ where: { campaignId, isMinusPhrase: true } })
         return minusPhrases
     }
+     
+    async editKeyword(keywordId, groupId, isMinusPhrase) {
+        if (groupId === 'null') {
+            const newKeyword = await Keyword.update(
+                {
+                    groupId: null,
+                    isMinusPhrase
+                },
+                {
+                    where: {keywordId}
+                }
+            )
+            return newKeyword
+        } else {
+            const newKeyword = await Keyword.update(
+                {
+                    groupId,
+                    isMinusPhrase
+                },
+                {
+                    where: {keywordId}
+                }
+            )
+            return newKeyword
+        }
+    }
 
-    async createKeyword( campaignId, groupId, keyword, ams, competition, lowRange, highRange, currency ) {
+
+   async createKeyword( campaignId, groupId, keyword, ams, competition, lowRange, highRange, currency ) {
         if (groupId === 'null') {
             const newKeyword = await Keyword.create({ campaignId, keyword, ams, competition, lowRange, highRange, currency, isMinusPhrase: false })
             return newKeyword

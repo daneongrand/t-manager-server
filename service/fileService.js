@@ -23,7 +23,7 @@ class fileService {
         //     }
         // })
         const keywords = Promise.all(results.map(async (item) => {
-            await keywordsService.create(
+            const { dataValues } = await keywordsService.createKeyword(
                 campaignId,
                 'null',
                 item["Keyword"],
@@ -33,12 +33,12 @@ class fileService {
                 item["Top of page bid (high range)"],
                 item["Currency"]
             )
+            return dataValues
         }))
+        const data = await keywords
         await fs.unlink(pathUploadFile)
         await fs.rmdir(path.join(pathDirsFiles, `id_${id}`))
-        return {
-            keywords
-        }
+        return data
     }
 
     async readFile(pathUploadFile) {
