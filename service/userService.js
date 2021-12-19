@@ -72,6 +72,8 @@ class UserService {
             throw ApiError.UnauthorizedError()
         }
 
+        await tokenService.removeToken(refreshToken)
+
         const user = await User.findOne({ where: { id: userData.id } })
 
         const userDto = new UserDto(user)
