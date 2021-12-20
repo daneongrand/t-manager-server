@@ -29,6 +29,19 @@ const User = sequelize.define('user', {
 
     lastName: {
         type: DataTypes.STRING
+    },
+    
+    isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+
+    avatarSmall: {
+        type: DataTypes.STRING
+    },
+
+    avatarOriginal: {
+        type: DataTypes.STRING
     }
 
 })

@@ -13,6 +13,28 @@ class fileController {
             next(e)
         }
     }
+
+    async updateAvatar(req, res, next) {
+        try {
+            const { user } = req
+            const file = req.files.avatar
+            const newPaths = await fileService.updateAvatar(user.id, file)
+            return res.json(newPaths)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async deleteAvatar(req, res, next) {
+        try {
+            const { user } = req
+            const message = await fileService.deleteAvatar(user.id)
+            res.json(message)
+        } catch (e) {
+            next(e)
+        }
+    }
+
 }
 
 module.exports = new fileController()

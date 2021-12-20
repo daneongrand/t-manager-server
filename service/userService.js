@@ -46,10 +46,15 @@ class UserService {
         }
 
         const userDto = new UserDto(user)
+        const avatarPath = {
+            avatarOriginalName: user.avatarOriginal,
+            avatarSmallName: user.avatarSmall
+        }
         const tokens = tokenService.generateTokens({ ...userDto })
         tokenService.saveToken(userDto.id, tokens.refreshToken)
         
         return {
+            ...avatarPath, 
             ...tokens,
             user: userDto
         }

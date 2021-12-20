@@ -17,6 +17,7 @@ app.use(cors({
     origin: process.env.CLIENT_URL
 }))
 app.use(express.json())
+app.use(express.static('static'))
 app.use('/api', router)
 app.use(errorMiddleware)
 
