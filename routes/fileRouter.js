@@ -4,6 +4,7 @@ const authMiddleware = require('../middlewares/authMiddleware')
 const router = new Router()
 
 router.post('/uploadFile/:campaignId', authMiddleware, fileController.fileUpload)
+router.post('/uploadAvatar', authMiddleware, fileController.uploadAvatar )
 router.put('/updateAvatar', authMiddleware, fileController.updateAvatar)
 router.delete('/deleteAvatar', authMiddleware, fileController.deleteAvatar)
 

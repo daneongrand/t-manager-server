@@ -11,11 +11,20 @@ class UserService {
 
         const candidate_email = await User.findOne({ where: {email: email} })
         const candidate_nickName = await User.findOne({ where: {nickName: nickName} })
-
-        if (candidate_email || candidate_nickName) {
-            throw ApiError.BadRequest(`Пользователь с таким email или nickname уже существует`)
+        let errorArray = []
+    
+        if (candidate_email) {
+            errorArray.push({ errCode: 1, errName: 'Пользователь с таким email уже существует' })
         }
 
+        if (candidate_nickName) {
+            errorArray.push({ errCode: 2, errName: 'Пользователь с таким nickName уже существует' })
+        }
+
+        if (candidate_email || candidate_nickName) {
+            throw ApiError.BadRequest(`Пользователь с такимими данными уже существует`, errorArray)
+        }
+        
         const hashPassword = await bcrypt.hash(password, 3)
         console.log(hashPassword)
         const user = await User.create({firstName, lastName, nickName, email, password: hashPassword})
@@ -25,7 +34,7 @@ class UserService {
 
         return {
             ...tokens,
-            user: userDto
+            ...userDto
         }
     }
 
@@ -56,7 +65,7 @@ class UserService {
         return {
             ...avatarPath, 
             ...tokens,
-            user: userDto
+            ...userDto
         }
     }
 
@@ -81,13 +90,19 @@ class UserService {
 
         const user = await User.findOne({ where: { id: userData.id } })
 
+        const avatarPath = {
+            avatarOriginalName: user.avatarOriginal,
+            avatarSmallName: user.avatarSmall
+        }
+
         const userDto = new UserDto(user)
         const tokens = tokenService.generateTokens({ ...userDto })
         tokenService.saveToken(userDto.id, tokens.refreshToken)
         
         return {
+            ...avatarPath,
             ...tokens,
-            user: userDto
+            ...userDto
         }
     }
 

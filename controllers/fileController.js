@@ -14,6 +14,18 @@ class fileController {
         }
     }
 
+    async uploadAvatar(req, res, next) {
+        try {
+            const { user } = req
+            const avatar = req.files.avatar
+            console.log(avatar)
+            const paths = await fileService.uploadAvatar(user.id, avatar)
+            return res.json(paths)
+        } catch(e) {
+            next(e)
+        }
+    }
+
     async updateAvatar(req, res, next) {
         try {
             const { user } = req

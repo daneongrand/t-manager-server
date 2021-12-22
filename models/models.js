@@ -129,9 +129,23 @@ const TokenList = sequelize.define('tokenList', {
 
 })
 
+const HistoryPost = sequelize.define('historyPost', {
+    
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+
+    post: {
+        type: DataTypes.TEXT,
+    }
+
+})
 
 User.hasMany(Campaign)
 User.hasMany(TokenList)
+User.hasMany(HistoryPost)
 Campaign.hasMany(Group)
 Campaign.hasMany(Keyword)
 Group.hasMany(Keyword)
@@ -142,5 +156,6 @@ module.exports = {
     Campaign,
     Group,
     Keyword,
-    TokenList
+    TokenList,
+    HistoryPost
 }

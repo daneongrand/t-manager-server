@@ -2,6 +2,8 @@ const Router = require('express')
 const userController = require('../controllers/userController')
 const router = new Router()
 const { body } = require('express-validator')
+const multer = require('multer')
+const upload = multer({})
 
 router.post('/signup',
     body('email').isEmail(),

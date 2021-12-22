@@ -55,9 +55,9 @@ class fileService {
         const avatarSmallName = v4() + `.${extAvatar}`
 
         // Create original avatar 200x200
-        Jimp.read(path.join(pathDirsAvatars, avatarName))
+        await Jimp.read(path.join(pathDirsAvatars, avatarName))
             .then(newImg => {
-                const user = User.update({
+                User.update({
                     avatarOriginal: avatarOriginalName
                 },{
                     where: { id }
@@ -67,7 +67,7 @@ class fileService {
             .catch(err => console.log(err))
 
         // Create small avatar 24x24
-        Jimp.read(path.join(pathDirsAvatars, avatarName))
+        await Jimp.read(path.join(pathDirsAvatars, avatarName))
             .then(newImg => {
                 User.update({
                     avatarSmall: avatarSmallName

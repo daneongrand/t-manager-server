@@ -1,4 +1,5 @@
 const campaignService = require('../service/campaignService')
+const historyPostService = require('../service/historyPostService')
 
 class CampaignController {
     async getAll (req, res, next) {
@@ -25,9 +26,10 @@ class CampaignController {
 
     async rename (req, res, next) {
         try {
-            const { campaignName } = req.body
             const { id } = req.params
-            const newCampaignName = await campaignService.rename(id, campaignName)
+            const { campaignName } = req.body
+            const { user } = req
+            const newCampaignName = await campaignService.rename(id, campaignName, user.id)
             return res.json(newCampaignName)
         } catch (e) {
             next(e)
@@ -46,8 +48,9 @@ class CampaignController {
 
     async delete (req, res, next) {
         try {
+            const { user } = req
             const { id } = req.params
-            const campaign = await campaignService.delete(id)
+            const campaign = await campaignService.delete(id, user.id)
             console.log("CAMPAIGN", campaign)
             return res.json(campaign)
         } catch (e) {

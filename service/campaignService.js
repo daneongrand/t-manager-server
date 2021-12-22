@@ -1,4 +1,5 @@
 const { Campaign } = require('../models/models')
+const historyPostService = require('./historyPostService')
 
 class CampaignService {
     async getAll (userId) {
@@ -10,13 +11,18 @@ class CampaignService {
 
     async create (campaignName, userId) {
         const campaign = await Campaign.create({campaignName, userId})
+        const post = await historyPostService.createCampaignPost(campaignName, userId)
         return {
-            campaign
+            campaign,
+            post
         }
     }
 
-    async rename (campaignId, campaignName) {
-        const campaign = await Campaign.update(
+    async rename (campaignId, campaignName, id) {
+        const campaign = await Campaign.findOne({ where: { id: campaignId } })
+        const post = await historyPostService.renameCampaignPost(campaign.campaignName, campaignName, id)
+        
+        await Campaign.update(
             {
                 campaignName: campaignName
             },
@@ -25,7 +31,8 @@ class CampaignService {
             }
         )
         return {
-            campaignName
+            campaignName,
+            post
         }
     }
 
@@ -37,11 +44,16 @@ class CampaignService {
 
     }
 
-    async delete (campaignId) {
-        const deletedCampaignId = campaignId
-        const campaign = await Campaign.destroy({ where: { id: deletedCampaignId } })
+    async delete (campaignId, id) {
+        
+        const campaign = await Campaign.findOne({ where: { id: campaignId } })
+        
+        const post = await historyPostService.deleteCampaignPost(campaign.campaignName, id)
+
+        await Campaign.destroy({ where: { id: campaignId } })
         return {
-            deletedCampaignId
+            campaignId,
+            post
         }
     }
 }

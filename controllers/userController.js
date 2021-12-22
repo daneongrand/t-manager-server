@@ -6,27 +6,22 @@ const fileService = require('../service/fileService')
 class UserController {
     async registration (req, res, next) {
         try {
-            let avatarPaths
-            console.log(req)
+            
             const errors = validationResult(req)
+            
             if (!errors.isEmpty()) {
                 return next(ApiError.BadRequest('Ошибка при валидации', errors.array()))
             }
+            
             const { firstName, lastName, nickName, email, password } = req.body
             const userData = await userService.registration( firstName, lastName, nickName, email, password )
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 3600 * 1000, httpOnly: true})
             
-            console.log(userData.user.id)
-
-            if (req.files.avatar) {
-               avatarPaths = await fileService.uploadAvatar(userData.user.id, req.files.avatar)
-            }
+           
             
-            console.log(avatarPaths)
-
+            
             return res.json({
-                ...userData,
-                ...avatarPaths
+                ...userData
             })
         } catch (e) {
             next(e)
