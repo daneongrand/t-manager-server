@@ -17,9 +17,6 @@ class UserController {
             const userData = await userService.registration( firstName, lastName, nickName, email, password )
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 3600 * 1000, httpOnly: true})
             
-           
-            
-            
             return res.json({
                 ...userData
             })
@@ -56,6 +53,39 @@ class UserController {
             const userData = await userService.refresh(refreshToken)
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 3600 * 1000, httpOnly: true})
             return res.json(userData)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async changeFirstName (req, res, next) {
+        try {
+            const { user } = req
+            const { firstName } = req.body
+            const updatedData = await userService.changeFirstName(user.id, firstName)
+            return res.json(updatedData)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async changeLastName (req, res, next) {
+        try {
+            const { user } = req
+            const { lastName } = req.body
+            const updatedData = await userService.changeLastName(user.id, lastName)
+            return res.json(updatedData)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async changeNickName (req, res, next) {
+        try {
+            const { user } = req
+            const { nickName } = req.body
+            const updatedData = await userService.changeNickName(user.id, nickName)
+            return res.json(updatedData)
         } catch (e) {
             next(e)
         }

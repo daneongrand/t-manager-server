@@ -34,6 +34,9 @@ class UserService {
 
         return {
             ...tokens,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            nickName: user.nickName,
             ...userDto
         }
     }
@@ -65,6 +68,9 @@ class UserService {
         return {
             ...avatarPath, 
             ...tokens,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            nickName: user.nickName,
             ...userDto
         }
     }
@@ -102,7 +108,45 @@ class UserService {
         return {
             ...avatarPath,
             ...tokens,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            nickName: user.nickName,
             ...userDto
+        }
+    }
+
+    async changeFirstName (userId, newFirstName) {
+        await User.update({
+            firstName: newFirstName
+        }, {
+            where: { id: userId }
+        })
+        return newFirstName
+    }
+
+    async changeLastName (userId, newLastName) {
+        await User.update({
+            lastName: newLastName
+        }, {
+            where: { id: userId }
+        })
+        return newLastName
+    }
+
+    async changeNickName (userId, newNickName) {
+        console.log('123123123131      ',userId, newNickName)
+        const candidate = await User.findOne({ where: { nickName: newNickName } })
+        if (candidate) {
+            console.log(candidate, 'true')
+            throw ApiError.BadRequest(`Пользователь с такимими данными уже существует`, { errCode: 2, errName: 'Пользователь с таким nickName уже существует' })
+        } else {
+            console.log(candidate, 'false')
+            await User.update({
+                nickName: newNickName
+            }, {
+                where: { id: userId }
+            })
+            return newNickName 
         }
     }
 
