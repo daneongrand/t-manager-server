@@ -1,4 +1,5 @@
-const { Group, Keyword } = require("../models/models")
+const { Group, Keyword, Campaign } = require("../models/models")
+const historyPostService = require("./historyPostService")
 const keywordsService = require("./keywordsService")
 
 
@@ -21,34 +22,46 @@ class GroupService {
         return newGroups
     }
 
-    async create(campaignId, groupName) {
+    async create(campaignId, groupName, userId) {
+        console.log(typeof campaignId,typeof groupName,typeof userId)
         const group = await Group.create({groupName, campaignId})
+        const campaign = await Campaign.findOne({ where: { id: campaignId } })
+        const post = await historyPostService.createGroupPost(campaign.campaignName, groupName, userId)
         return {
             groupId: group.id,
             groupName: group.groupName,
             campaignId: group.campaignId,
-            groupKeywords: []
+            groupKeywords: [],
+            ...post
         }
     }
 
-    async rename(groupId, groupName) {
-        const group = await Group.update({
+    async rename(groupId, groupName, userId) {
+        const group = await Group.findOne({ where: {id: groupId} })
+        const campaign = await Campaign.findOne({ where: {id: group.campaignId} })
+        const post = await historyPostService.renameGroupPost(campaign.campaignName, group.groupName, groupName, userId)
+        await Group.update({
             groupName: groupName
         }, {
             where: { id: groupId }
         })
         return {
             groupId: groupId,
-            groupName: groupName
+            groupName: groupName,
+            ...post
         }
     }
 
-    async delete(groupId) {
-        const group = await Group.destroy({
+    async delete(groupId, userId) {
+        const group = await Group.findOne({ where: {id: groupId} })
+        const campaign = await Campaign.findOne({ where: {id: group.campaignId} })
+        const post = await historyPostService.deleteGroupPost(campaign.campaignName, group.groupName, userId)
+        await Group.destroy({
             where: { id: groupId }
         })
         return {
-            groupId: groupId
+            groupId: groupId,
+            ...post
         }
     }
 
