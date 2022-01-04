@@ -7,6 +7,9 @@ class UserController {
     async registration (req, res, next) {
         try {
             
+            let avatarInfo
+            console.log('FORM DATA', req.body)
+            console.log('req files ', req.files)
             const errors = validationResult(req)
             
             if (!errors.isEmpty()) {
@@ -15,10 +18,18 @@ class UserController {
             
             const { firstName, lastName, nickName, email, password } = req.body
             const userData = await userService.registration( firstName, lastName, nickName, email, password )
+            
+            if (req.files?.avatar) {
+                const { avatar } = req.files
+                const avatarPath = await fileService.uploadAvatar(userData.id, avatar)
+                avatarInfo = avatarPath
+            }
+
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 3600 * 1000, httpOnly: true})
             
             return res.json({
-                ...userData
+                ...userData,
+                ...avatarInfo
             })
         } catch (e) {
             next(e)
